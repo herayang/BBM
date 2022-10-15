@@ -11,18 +11,25 @@ app.get('/', (req,res)=>{
 });
 
 
-
+//user logged in 
 io.on('connection', (socket) =>{
     console.log ('a user connected');
+
+    //user disconnected
     socket.on('disconnect', () =>{
         console.log('user disconnected');
     });
+
+    //chats going on 
     socket.on('chat_message', (msg)=>{
-        console.log('message: ' + msg);
+        console.log(msg.id +': ' + msg.input);
         // socket.emit('chat_message',{message: msg});
-        io.sockets.emit('chat_message',{message: msg})
+        io.sockets.emit('chat_message',{message: msg.input, id: msg.id})
     });
+
+
 });
+
 
 
 server.listen(3000, () => {

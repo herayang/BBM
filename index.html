@@ -31,21 +31,24 @@
             var form = document.getElementById('form');
             var input = document.getElementById('input');
 
+            let user_id = prompt("please enter your id")
+            socket.emit('user_id_set', {id: user_id})
             
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 if (input.value) {
-                socket.emit('chat_message', input.value);
+                //emit socket's input and userid 
+                socket.emit('chat_message', {input: input.value, id:user_id});
                 // io.sockets.emit('chat_message', input.value);
                 input.value = '';
                 }
 
             });
 
-            
+            // listesns for chat_message event, creates li elements.
             socket.on('chat_message', function(data) {
                 var item = document.createElement('li');
-                item.textContent = data.message;
+                item.textContent = data.id +": " + data.message;
                 messages.appendChild(item);
                 window.scrollTo(0, document.body.scrollHeight);
             });
